@@ -1,0 +1,7 @@
+import time
+from random import random
+
+def exponentialbackoff(num): 
+    return (2**num) + random()
+    
+time.sleep(exponentialbackoff(counter%5))
