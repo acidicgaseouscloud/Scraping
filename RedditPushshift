@@ -11,7 +11,7 @@ def exponentialbackoff(num):
 # Initializations
 Mdf = pd.DataFrame()
 utc = 1649019962
-url = "https://api.pushshift.io/reddit/search/submission/?subreddit=TheRedPill&fields=author,full_link,id,permalink,created_utc,selftext,retrieved_on,title,url&size=500&sort_type=created_utc&before="
+url = "https://api.pushshift.io/reddit/search/submission/?subreddit=&fields=&size=500&sort_type=created_utc&before="
 
 # Scrape Function
 def scrape(utc):
