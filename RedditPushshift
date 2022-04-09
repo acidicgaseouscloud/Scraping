@@ -1,0 +1,35 @@
+# Import packages
+import requests
+import json
+import pandas as pd
+from random import random
+
+# Artificial time delay
+def exponentialbackoff(num): 
+    return (2**num) + random()
+    
+# Initializations
+Mdf = pd.DataFrame()
+utc = 1649019962
+url = "https://api.pushshift.io/reddit/search/submission/?subreddit=TheRedPill&fields=author,full_link,id,permalink,created_utc,selftext,retrieved_on,title,url&size=500&sort_type=created_utc&before="
+
+# Scrape Function
+def scrape(utc):
+    counter = -1
+    while True: 
+        counter+=1
+        tempurl= url+str(utc)
+        print(tempurl)
+        response = requests.get(tempurl)
+        df = pd.json_normalize(response.json(), record_path=['data'])
+        if df.size == 0: 
+            Mdf.to_csv("MainDF.csv")
+            exit
+        filepath = "tempdfs/"+ str(counter) + ".csv"
+        df.to_csv(filepath)
+        Mdf.append(df)
+        utc = df["created_utc"].values[-1]
+        time.sleep(exponentialbackoff(counter%5))
+        
+# Begin Scraping
+scrape(utc)
